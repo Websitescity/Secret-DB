@@ -1,0 +1,47 @@
+openapi: 3.0.0
+info:
+  title: Encrypted Image API
+  description: API for uploading and downloading encrypted images
+  version: 1.0.0
+paths:
+  /upload:
+    post:
+      summary: Uploads an image
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                secretKey:
+                  type: string
+                  example: ""
+
+      responses:
+        '200':
+          description: Image uploaded successfully
+  /download/{id}:
+    get:
+      summary: Downloads an image by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: secretKey # Added optional parameter for secret key
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Image downloaded successfully
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
